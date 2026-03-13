@@ -2,8 +2,13 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>CAM ON</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
@@ -17,15 +22,14 @@
       height: 100%;
       background: #000;
       color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
       overflow: hidden;
+      font-family: 'Montserrat', Arial, sans-serif;
     }
 
     body {
       display: flex;
-      align-items: center;
       justify-content: center;
-      background: #000;
+      align-items: center;
     }
 
     .app {
@@ -35,140 +39,146 @@
       height: 100dvh;
       background: #000;
       overflow: hidden;
-    }
-
-    video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      background: #000;
-    }
-
-    canvas {
-      display: none;
-    }
-
-    .overlay {
-      position: absolute;
-      inset: 0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      align-items: center;
-      padding: 20px 18px 30px;
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.55) 0%,
-        rgba(0,0,0,0.18) 22%,
-        rgba(0,0,0,0.10) 55%,
-        rgba(0,0,0,0.55) 100%
-      );
-      pointer-events: none;
+      padding: 22px 18px 30px;
     }
 
-    .overlay > * {
-      pointer-events: auto;
-    }
-
-    .top-bar {
-      width: 100%;
+    .top {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 14px;
-      margin-top: 2px;
+      margin-top: 6px;
     }
 
-    .record-dot {
+    .dot {
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: #20e85a;
-      box-shadow: 0 0 12px rgba(32, 232, 90, 0.9);
+      background: #1eff5a;
+      box-shadow: 0 0 14px rgba(30,255,90,0.9);
     }
 
     .timer {
-      background: #ff3341;
+      background: #ff3647;
       color: #fff;
-      padding: 10px 18px;
+      padding: 11px 20px;
       border-radius: 12px;
       font-size: 18px;
       font-weight: 700;
       letter-spacing: 2px;
       font-variant-numeric: tabular-nums;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
     }
 
     .hero {
-      width: 100%;
       text-align: center;
-      margin-top: 30px;
+      margin-top: 10px;
     }
 
     .date {
       font-size: 18px;
-      letter-spacing: 6px;
-      color: rgba(255,255,255,0.9);
-      margin-bottom: 12px;
+      letter-spacing: 7px;
       text-transform: uppercase;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 12px;
     }
 
     .title {
       margin: 0;
-      font-size: clamp(78px, 20vw, 128px);
-      line-height: 0.95;
-      font-weight: 900;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(92px, 24vw, 150px);
+      line-height: 0.9;
       letter-spacing: 2px;
       text-transform: uppercase;
+      color: #f2f2f2;
     }
 
     .subtitle {
-      margin-top: 18px;
+      margin-top: 16px;
       font-size: 14px;
       letter-spacing: 8px;
-      color: rgba(255,255,255,0.9);
       text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
       white-space: nowrap;
     }
 
     .brand {
-      margin-top: 52px;
-      font-size: 32px;
-      font-weight: 900;
+      margin-top: 56px;
+      font-family: 'Anton', sans-serif;
+      font-size: 40px;
       letter-spacing: 1px;
-      text-transform: uppercase;
-      font-style: italic;
+      transform: skewX(-12deg);
+      color: #fff;
     }
 
-    .bottom-ui {
+    .consent-box {
+      margin: 34px auto 0;
       width: 100%;
+      max-width: 330px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .consent-box input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      border: 2px solid rgba(255,255,255,0.9);
+      border-radius: 6px;
+      background: rgba(255,255,255,0.02);
+      position: relative;
+      margin-top: 2px;
+    }
+
+    .consent-box input[type="checkbox"]:checked::after {
+      content: "✓";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .consent-box label {
+      font-size: 14px;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .bottom {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 26px;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
-    .zoom-row {
+    .zoom {
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 30px;
+      font-size: 18px;
       color: rgba(255,255,255,0.92);
-      font-size: 17px;
     }
 
     .zoom-active {
-      width: 52px;
-      height: 52px;
+      width: 54px;
+      height: 54px;
       border-radius: 50%;
-      background: rgba(40,40,40,0.85);
+      background: rgba(40,40,40,0.95);
       display: flex;
-      align-items: center;
       justify-content: center;
-      color: #ffd84d;
+      align-items: center;
+      color: #ffd43b;
       font-weight: 700;
     }
 
@@ -181,210 +191,136 @@
     }
 
     .side-btn {
-      width: 78px;
-      height: 78px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       border: none;
-      background: rgba(30,30,30,0.88);
+      background: rgba(35,35,35,0.95);
       color: #fff;
-      font-size: 34px;
+      font-size: 36px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      backdrop-filter: blur(6px);
+      align-items: center;
       cursor: pointer;
     }
 
     .capture-btn {
-      width: 118px;
-      height: 118px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       border: none;
-      background: rgba(55,55,55,0.95);
+      background: rgba(52,52,52,0.96);
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
     }
 
     .capture-inner {
-      width: 58px;
-      height: 58px;
+      width: 60px;
+      height: 60px;
       border-radius: 16px;
-      background: #ff3341;
+      background: #ff3647;
     }
 
-    .upload-btn {
-      width: 78px;
-      height: 78px;
+    .upload-preview {
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      border: 6px solid rgba(60,60,60,0.95);
+      border: 6px solid rgba(70,70,70,0.95);
       background: #fff;
       cursor: pointer;
     }
 
-    .consent-bar {
-      position: absolute;
-      left: 14px;
-      right: 14px;
-      bottom: 248px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      background: rgba(0,0,0,0.45);
-      border-radius: 14px;
-      padding: 12px 14px;
-      backdrop-filter: blur(6px);
-    }
-
-    .consent-bar input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 24px;
-      height: 24px;
-      min-width: 24px;
-      border: 2px solid rgba(255,255,255,0.8);
-      border-radius: 6px;
-      background: rgba(0,0,0,0.25);
-      position: relative;
-      margin-top: 2px;
-    }
-
-    .consent-bar input[type="checkbox"]:checked::after {
-      content: "✓";
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .consent-bar label {
+    .hint {
+      min-height: 22px;
       font-size: 14px;
-      line-height: 1.4;
-      color: rgba(255,255,255,0.95);
-      text-align: left;
-    }
-
-    .status {
-      position: absolute;
-      left: 20px;
-      right: 20px;
-      bottom: 210px;
+      color: rgba(255,255,255,0.85);
       text-align: center;
-      font-size: 14px;
-      color: #fff;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.55);
     }
 
-    .fallback {
-      position: absolute;
-      inset: 0;
+    .hidden-input {
       display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 28px;
-      text-align: center;
-      background: #000;
-      z-index: 10;
-      color: #fff;
     }
 
     @media (max-width: 390px) {
+      .title {
+        font-size: 86px;
+      }
+
       .subtitle {
-        letter-spacing: 5px;
         font-size: 12px;
+        letter-spacing: 6px;
       }
 
       .brand {
-        font-size: 28px;
-      }
-
-      .consent-bar {
-        bottom: 235px;
+        font-size: 34px;
       }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <video id="video" autoplay playsinline muted></video>
-    <canvas id="canvas"></canvas>
+    <div class="top">
+      <div class="dot"></div>
+      <div class="timer" id="timer">00:00:00</div>
+    </div>
 
-    <div class="fallback" id="fallback">
-      <div>
-        <p>Kamera konnte nicht geöffnet werden.</p>
-        <p>Bitte erlaube Kamerazugriff und lade die Seite neu.</p>
+    <div class="hero">
+      <div class="date">MARCH 13TH</div>
+      <h1 class="title">CAM ON</h1>
+      <div class="subtitle">INTERNATIONAL MUSIC VIBES</div>
+      <div class="brand">APARTMENT</div>
+
+      <div class="consent-box">
+        <input type="checkbox" id="consent" />
+        <label for="consent">
+          Ich stimme zu, dass mein Foto auf Instagram und anderen Social-Media-Plattformen genutzt werden darf.
+        </label>
       </div>
     </div>
 
-    <div class="overlay">
-      <div class="top-bar">
-        <div class="record-dot"></div>
-        <div class="timer" id="timer">00:00:00</div>
+    <div class="bottom">
+      <div class="zoom">
+        <span>0,5</span>
+        <span class="zoom-active">1×</span>
+        <span>2</span>
+        <span>3</span>
       </div>
 
-      <div class="hero">
-        <div class="date">MARCH 13TH</div>
-        <h1 class="title">CAM ON</h1>
-        <div class="subtitle">INTERNATIONAL MUSIC VIBES</div>
-        <div class="brand">APARTMENT</div>
+      <div class="controls">
+        <button class="side-btn" type="button">❚❚</button>
+
+        <button class="capture-btn" id="openCameraBtn" type="button">
+          <span class="capture-inner"></span>
+        </button>
+
+        <button class="upload-preview" id="uploadPreviewBtn" type="button"></button>
       </div>
 
-      <div class="bottom-ui">
-        <div class="zoom-row">
-          <span>0,5</span>
-          <span class="zoom-active">1×</span>
-          <span>2</span>
-          <span>3</span>
-        </div>
-
-        <div class="controls">
-          <button class="side-btn" id="pauseBtn" type="button">❚❚</button>
-
-          <button class="capture-btn" id="captureBtn" type="button">
-            <span class="capture-inner"></span>
-          </button>
-
-          <button class="upload-btn" id="uploadBtn" type="button" title="Hochladen"></button>
-        </div>
-      </div>
+      <div class="hint" id="statusText">Bitte zuerst zustimmen.</div>
     </div>
 
-    <div class="consent-bar">
-      <input type="checkbox" id="consent" />
-      <label for="consent">
-        Ich stimme zu, dass mein Foto auf Instagram und anderen Social-Media-Plattformen genutzt werden darf.
-      </label>
-    </div>
-
-    <div class="status" id="status"></div>
+    <input
+      class="hidden-input"
+      id="cameraInput"
+      type="file"
+      accept="image/*"
+      capture="environment"
+    />
   </div>
 
   <script>
     const CLOUD_NAME = "dhl8ywkmb";
     const UPLOAD_PRESET = "camon_upload";
 
-    const video = document.getElementById("video");
-    const canvas = document.getElementById("canvas");
     const consent = document.getElementById("consent");
-    const captureBtn = document.getElementById("captureBtn");
-    const uploadBtn = document.getElementById("uploadBtn");
-    const pauseBtn = document.getElementById("pauseBtn");
-    const statusText = document.getElementById("status");
-    const fallback = document.getElementById("fallback");
+    const openCameraBtn = document.getElementById("openCameraBtn");
+    const cameraInput = document.getElementById("cameraInput");
+    const statusText = document.getElementById("statusText");
     const timer = document.getElementById("timer");
 
-    let stream = null;
-    let capturedBlob = null;
-    let facingMode = "environment";
-    let timerSeconds = 0;
-    let timerInterval = null;
-    let paused = false;
+    let seconds = 0;
 
     function formatTime(totalSeconds) {
       const hh = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
@@ -393,75 +329,35 @@
       return `${hh}:${mm}:${ss}`;
     }
 
-    function startTimer() {
-      if (timerInterval) clearInterval(timerInterval);
-      timer.textContent = formatTime(0);
-      timerInterval = setInterval(() => {
-        if (!paused) {
-          timerSeconds++;
-          timer.textContent = formatTime(timerSeconds);
-        }
-      }, 1000);
-    }
+    timer.textContent = formatTime(0);
 
-    async function startCamera() {
-      try {
-        if (stream) {
-          stream.getTracks().forEach(track => track.stop());
-        }
+    setInterval(() => {
+      seconds++;
+      timer.textContent = formatTime(seconds);
+    }, 1000);
 
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: facingMode
-          },
-          audio: false
-        });
-
-        video.srcObject = stream;
-        fallback.style.display = "none";
-        statusText.textContent = "";
-      } catch (error) {
-        fallback.style.display = "flex";
-        statusText.textContent = "Kamera konnte nicht gestartet werden.";
-      }
-    }
-
-    captureBtn.addEventListener("click", () => {
-      const width = video.videoWidth;
-      const height = video.videoHeight;
-
-      if (!width || !height) {
-        statusText.textContent = "Kamera ist noch nicht bereit.";
+    openCameraBtn.addEventListener("click", () => {
+      if (!consent.checked) {
+        statusText.textContent = "Bitte zuerst zustimmen.";
         return;
       }
 
-      canvas.width = width;
-      canvas.height = height;
-
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0, width, height);
-
-      canvas.toBlob((blob) => {
-        capturedBlob = blob;
-        statusText.textContent = "Foto aufgenommen.";
-      }, "image/jpeg", 0.92);
+      statusText.textContent = "Kamera wird geöffnet...";
+      cameraInput.click();
     });
 
-    uploadBtn.addEventListener("click", async () => {
-      if (!capturedBlob) {
-        statusText.textContent = "Bitte erst ein Foto machen.";
-        return;
-      }
+    cameraInput.addEventListener("change", async (event) => {
+      const file = event.target.files[0];
 
-      if (!consent.checked) {
-        statusText.textContent = "Bitte erst zustimmen.";
+      if (!file) {
+        statusText.textContent = "Kein Bild ausgewählt.";
         return;
       }
 
       statusText.textContent = "Foto wird hochgeladen...";
 
       const formData = new FormData();
-      formData.append("file", capturedBlob, "camon-photo.jpg");
+      formData.append("file", file);
       formData.append("upload_preset", UPLOAD_PRESET);
       formData.append("folder", "camon_party");
 
@@ -472,30 +368,15 @@
         });
 
         if (!response.ok) {
-          throw new Error("Upload fehlgeschlagen");
+          throw new Error("Upload failed");
         }
 
-        capturedBlob = null;
         statusText.textContent = "Foto erfolgreich hochgeladen.";
+        cameraInput.value = "";
       } catch (error) {
         statusText.textContent = "Upload fehlgeschlagen.";
       }
     });
-
-    pauseBtn.addEventListener("click", () => {
-      paused = !paused;
-      pauseBtn.textContent = paused ? "▶" : "❚❚";
-      statusText.textContent = paused ? "Timer pausiert." : "";
-    });
-
-    video.addEventListener("click", async () => {
-      facingMode = facingMode === "environment" ? "user" : "environment";
-      await startCamera();
-    });
-
-    timer.textContent = formatTime(0);
-    startTimer();
-    startCamera();
   </script>
 </body>
 </html>
