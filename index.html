@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CAM ON</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+</head>
+
+<body style="text-align:center;font-family:sans-serif;background:black;color:white">
+
+<h1>CAM ON 📷</h1>
+<p>Mach dein Partyfoto</p>
+
+<label>
+<input type="checkbox" id="consent">
+Ich stimme zu, dass mein Foto auf Instagram und anderen Social Media Plattformen genutzt werden darf.
+</label>
+
+<br><br>
+
+<button id="upload_widget" disabled>Foto machen</button>
+
+<script>
+
+const checkbox = document.getElementById("consent");
+const button = document.getElementById("upload_widget");
+
+checkbox.addEventListener("change", function() {
+button.disabled = !this.checked;
+});
+
+var myWidget = cloudinary.createUploadWidget({
+cloudName: "dhl8ywkmb",
+uploadPreset: "camon_upload",
+sources: ["camera","local"],
+multiple: false
+}, (error, result) => {
+if (!error && result && result.event === "success") {
+alert("Foto erfolgreich hochgeladen!");
+}
+});
+
+button.addEventListener("click", function(){
+myWidget.open();
+}, false);
+
+</script>
+
+</body>
+</html>
