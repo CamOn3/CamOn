@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CAM ON</title>
-  <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -34,11 +33,42 @@
       max-width: 430px;
       height: 100dvh;
       background: #000;
+      overflow: hidden;
+    }
+
+    video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #000;
+    }
+
+    canvas {
+      display: none;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       padding: 26px 22px 34px;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.15) 20%,
+        rgba(0,0,0,0.15) 60%,
+        rgba(0,0,0,0.55) 100%
+      );
+      pointer-events: none;
+    }
+
+    .overlay > * {
+      pointer-events: auto;
     }
 
     .top-light {
@@ -64,12 +94,13 @@
     .hero {
       text-align: center;
       margin-top: 10px;
+      width: 100%;
     }
 
     .date {
       font-size: 18px;
       letter-spacing: 4px;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255,255,255,0.7);
       margin-bottom: 6px;
     }
 
@@ -86,7 +117,7 @@
       margin-top: 10px;
       font-size: 14px;
       letter-spacing: 6px;
-      color: rgba(255,255,255,0.38);
+      color: rgba(255,255,255,0.65);
       text-transform: uppercase;
       white-space: nowrap;
     }
@@ -94,13 +125,14 @@
     .consent-wrap {
       width: 100%;
       max-width: 320px;
-      margin-top: 18px;
+      margin: 18px auto 0;
       display: flex;
       align-items: flex-start;
       gap: 12px;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255,255,255,0.88);
       font-size: 14px;
       line-height: 1.45;
+      text-align: left;
     }
 
     .consent-wrap input[type="checkbox"] {
@@ -109,9 +141,9 @@
       width: 24px;
       height: 24px;
       min-width: 24px;
-      border: 2px solid rgba(255,255,255,0.5);
+      border: 2px solid rgba(255,255,255,0.85);
       border-radius: 6px;
-      background: transparent;
+      background: rgba(0,0,0,0.2);
       margin-top: 2px;
       position: relative;
       cursor: pointer;
@@ -135,7 +167,7 @@
       justify-content: center;
       gap: 22px;
       margin-top: 14px;
-      color: rgba(255,255,255,0.45);
+      color: rgba(255,255,255,0.9);
       font-size: 16px;
     }
 
@@ -143,7 +175,7 @@
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.25);
       color: #fff;
       display: flex;
       align-items: center;
@@ -154,10 +186,10 @@
     .camera-controls {
       width: 100%;
       max-width: 320px;
+      margin: 18px auto 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 18px;
     }
 
     .side-btn {
@@ -165,25 +197,21 @@
       height: 64px;
       border-radius: 50%;
       border: none;
-      background: rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.35);
       color: white;
       font-size: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-    }
-
-    .side-btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
+      backdrop-filter: blur(6px);
     }
 
     .shutter {
       width: 96px;
       height: 96px;
       border-radius: 50%;
-      border: 4px solid rgba(255,255,255,0.5);
+      border: 4px solid rgba(255,255,255,0.8);
       background: transparent;
       display: flex;
       align-items: center;
@@ -192,7 +220,8 @@
       cursor: pointer;
     }
 
-    .shutter:disabled {
+    .shutter:disabled,
+    .side-btn:disabled {
       opacity: 0.45;
       cursor: not-allowed;
     }
@@ -201,7 +230,7 @@
       width: 70px;
       height: 70px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.7);
       border: none;
     }
 
@@ -210,16 +239,30 @@
       text-align: center;
       font-size: 15px;
       letter-spacing: 1px;
-      color: rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.82);
       text-transform: uppercase;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
     }
 
     .status {
       margin-top: 10px;
       min-height: 20px;
       font-size: 14px;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.95);
       text-align: center;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+
+    .fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      background: #000;
+      z-index: 5;
     }
 
     @media (max-width: 380px) {
@@ -236,104 +279,172 @@
 </head>
 <body>
   <div class="app">
-    <div style="display:flex; flex-direction:column; align-items:center;">
-      <div class="top-light"></div>
-      <div class="countdown" id="countdown">00:00:14</div>
+    <video id="video" autoplay playsinline muted></video>
+    <canvas id="canvas"></canvas>
+
+    <div class="fallback" id="fallback">
+      <div>
+        <p>Kamera konnte nicht geöffnet werden.</p>
+        <p>Bitte erlaube den Kamerazugriff und lade die Seite neu.</p>
+      </div>
     </div>
 
-    <div class="hero">
-      <div class="date">MARCH 13TH</div>
-      <h1 class="title">CAM ON</h1>
-      <div class="subtitle">INTERNATIONAL MUSIC VIBES</div>
-
-      <div class="consent-wrap">
-        <input type="checkbox" id="consent" />
-        <label for="consent">
-          Ich stimme zu, dass mein Foto auf Instagram und anderen Social-Media-Plattformen genutzt werden darf.
-        </label>
+    <div class="overlay">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div class="top-light"></div>
+        <div class="countdown" id="countdown">00:00:14</div>
       </div>
 
-      <div class="zoom">
-        <span>0.5</span>
-        <span class="active">1×</span>
-        <span>2</span>
-        <span>3</span>
+      <div class="hero">
+        <div class="date">MARCH 13TH</div>
+        <h1 class="title">CAM ON</h1>
+        <div class="subtitle">INTERNATIONAL MUSIC VIBES</div>
+
+        <div class="consent-wrap">
+          <input type="checkbox" id="consent" />
+          <label for="consent">
+            Ich stimme zu, dass mein Foto auf Instagram und anderen Social-Media-Plattformen genutzt werden darf.
+          </label>
+        </div>
+
+        <div class="zoom">
+          <span>0.5</span>
+          <span class="active">1×</span>
+          <span>2</span>
+          <span>3</span>
+        </div>
+
+        <div class="camera-controls">
+          <button class="side-btn" id="switchBtn" type="button">↺</button>
+
+          <button class="shutter" id="captureBtn" type="button" disabled>
+            <span class="shutter-inner"></span>
+          </button>
+
+          <button class="side-btn" id="uploadBtn" type="button" disabled>↑</button>
+        </div>
+
+        <div class="hint" id="hint">BITTE ZUERST ZUSTIMMEN</div>
+        <div class="status" id="status"></div>
       </div>
 
-      <div class="camera-controls">
-        <button class="side-btn" id="pauseBtn" type="button">❚❚</button>
-
-        <button class="shutter" id="upload_widget" type="button" disabled>
-          <span class="shutter-inner"></span>
-        </button>
-
-        <button class="side-btn" id="switchBtn" type="button">●</button>
-      </div>
-
-      <div class="hint" id="hint">BITTE ZUERST ZUSTIMMEN</div>
-      <div class="status" id="status"></div>
+      <div></div>
     </div>
-
-    <div></div>
   </div>
 
   <script>
-    const checkbox = document.getElementById("consent");
-    const uploadButton = document.getElementById("upload_widget");
+    const CLOUD_NAME = "dhl8ywkmb";
+    const UPLOAD_PRESET = "camon_upload";
+
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const consent = document.getElementById("consent");
+    const captureBtn = document.getElementById("captureBtn");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const switchBtn = document.getElementById("switchBtn");
     const hint = document.getElementById("hint");
     const statusText = document.getElementById("status");
-
-    checkbox.addEventListener("change", function () {
-      uploadButton.disabled = !this.checked;
-      hint.textContent = this.checked ? "JETZT FOTO MACHEN" : "BITTE ZUERST ZUSTIMMEN";
-      hint.style.color = this.checked
-        ? "rgba(255,255,255,0.45)"
-        : "rgba(255,255,255,0.18)";
-    });
-
-    const myWidget = cloudinary.createUploadWidget(
-      {
-        cloudName: "dhl8ywkmb",
-        uploadPreset: "camon_upload",
-        sources: ["camera", "local"],
-        multiple: false,
-        folder: "camon_party",
-        resourceType: "image",
-        clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
-        maxFiles: 1,
-        showAdvancedOptions: false,
-        cropping: false,
-        showSkipCropButton: true,
-        theme: "minimal"
-      },
-      (error, result) => {
-        if (error) {
-          statusText.textContent = "Upload fehlgeschlagen.";
-          return;
-        }
-
-        if (result && result.event === "success") {
-          statusText.textContent = "Foto erfolgreich hochgeladen.";
-        }
-      }
-    );
-
-    uploadButton.addEventListener("click", function () {
-      if (!checkbox.checked) return;
-      myWidget.open();
-    });
-
-    // einfacher statischer Countdown-Look wie im Screenshot
-    let seconds = 14;
+    const fallback = document.getElementById("fallback");
     const countdown = document.getElementById("countdown");
 
+    let stream = null;
+    let currentFacingMode = "environment";
+    let capturedBlob = null;
+
+    async function startCamera() {
+      try {
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+        }
+
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: currentFacingMode },
+          audio: false
+        });
+
+        video.srcObject = stream;
+        fallback.style.display = "none";
+        statusText.textContent = "";
+      } catch (err) {
+        fallback.style.display = "flex";
+        statusText.textContent = "Kamera konnte nicht gestartet werden.";
+      }
+    }
+
+    function updateButtons() {
+      const allowed = consent.checked;
+      captureBtn.disabled = !allowed;
+      uploadBtn.disabled = !allowed || !capturedBlob;
+      hint.textContent = allowed ? "JETZT FOTO MACHEN" : "BITTE ZUERST ZUSTIMMEN";
+    }
+
+    consent.addEventListener("change", updateButtons);
+
+    captureBtn.addEventListener("click", () => {
+      if (!consent.checked) return;
+
+      const width = video.videoWidth;
+      const height = video.videoHeight;
+
+      if (!width || !height) {
+        statusText.textContent = "Kamera ist noch nicht bereit.";
+        return;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, width, height);
+
+      canvas.toBlob((blob) => {
+        capturedBlob = blob;
+        uploadBtn.disabled = false;
+        statusText.textContent = "Foto aufgenommen. Jetzt hochladen.";
+      }, "image/jpeg", 0.92);
+    });
+
+    uploadBtn.addEventListener("click", async () => {
+      if (!capturedBlob || !consent.checked) return;
+
+      statusText.textContent = "Foto wird hochgeladen...";
+
+      const formData = new FormData();
+      formData.append("file", capturedBlob, "camon-photo.jpg");
+      formData.append("upload_preset", UPLOAD_PRESET);
+      formData.append("folder", "camon_party");
+
+      try {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) throw new Error("Upload failed");
+
+        statusText.textContent = "Foto erfolgreich hochgeladen.";
+        capturedBlob = null;
+        uploadBtn.disabled = true;
+      } catch (err) {
+        statusText.textContent = "Upload fehlgeschlagen.";
+      }
+    });
+
+    switchBtn.addEventListener("click", async () => {
+      currentFacingMode = currentFacingMode === "environment" ? "user" : "environment";
+      await startCamera();
+    });
+
+    let seconds = 14;
     setInterval(() => {
       if (seconds > 0) seconds--;
-      const hh = "00";
-      const mm = "00";
       const ss = String(seconds).padStart(2, "0");
-      countdown.textContent = `${hh}:${mm}:${ss}`;
+      countdown.textContent = `00:00:${ss}`;
     }, 1000);
+
+    updateButtons();
+    startCamera();
   </script>
 </body>
 </html>
+    
