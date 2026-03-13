@@ -25,6 +25,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #000;
     }
 
     .app {
@@ -54,14 +55,14 @@
       inset: 0;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: space-between;
-      padding: 26px 22px 34px;
+      align-items: center;
+      padding: 20px 18px 30px;
       background: linear-gradient(
         to bottom,
-        rgba(0,0,0,0.35) 0%,
-        rgba(0,0,0,0.15) 20%,
-        rgba(0,0,0,0.15) 60%,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.18) 22%,
+        rgba(0,0,0,0.10) 55%,
         rgba(0,0,0,0.55) 100%
       );
       pointer-events: none;
@@ -71,85 +72,186 @@
       pointer-events: auto;
     }
 
-    .top-light {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 18px rgba(255,255,255,0.9);
-      margin-top: 6px;
+    .top-bar {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-top: 2px;
     }
 
-    .countdown {
-      margin-top: 10px;
+    .record-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #20e85a;
+      box-shadow: 0 0 12px rgba(32, 232, 90, 0.9);
+    }
+
+    .timer {
+      background: #ff3341;
+      color: #fff;
       padding: 10px 18px;
-      border-radius: 10px;
-      background: rgba(28,28,28,0.95);
-      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
       font-size: 18px;
-      letter-spacing: 4px;
       font-weight: 700;
+      letter-spacing: 2px;
+      font-variant-numeric: tabular-nums;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
     }
 
     .hero {
-      text-align: center;
-      margin-top: 10px;
       width: 100%;
+      text-align: center;
+      margin-top: 30px;
     }
 
     .date {
       font-size: 18px;
-      letter-spacing: 4px;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 6px;
+      letter-spacing: 6px;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 12px;
+      text-transform: uppercase;
     }
 
     .title {
-      font-size: clamp(72px, 18vw, 118px);
-      font-weight: 900;
-      line-height: 0.9;
-      letter-spacing: 2px;
       margin: 0;
+      font-size: clamp(78px, 20vw, 128px);
+      line-height: 0.95;
+      font-weight: 900;
+      letter-spacing: 2px;
       text-transform: uppercase;
     }
 
     .subtitle {
-      margin-top: 10px;
+      margin-top: 18px;
       font-size: 14px;
-      letter-spacing: 6px;
-      color: rgba(255,255,255,0.65);
+      letter-spacing: 8px;
+      color: rgba(255,255,255,0.9);
       text-transform: uppercase;
       white-space: nowrap;
     }
 
-    .consent-wrap {
-      width: 100%;
-      max-width: 320px;
-      margin: 18px auto 0;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      color: rgba(255,255,255,0.88);
-      font-size: 14px;
-      line-height: 1.45;
-      text-align: left;
+    .brand {
+      margin-top: 52px;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-style: italic;
     }
 
-    .consent-wrap input[type="checkbox"] {
+    .bottom-ui {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+      margin-bottom: 8px;
+    }
+
+    .zoom-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      color: rgba(255,255,255,0.92);
+      font-size: 17px;
+    }
+
+    .zoom-active {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(40,40,40,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffd84d;
+      font-weight: 700;
+    }
+
+    .controls {
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .side-btn {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(30,30,30,0.88);
+      color: #fff;
+      font-size: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      cursor: pointer;
+    }
+
+    .capture-btn {
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(55,55,55,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    }
+
+    .capture-inner {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: #ff3341;
+    }
+
+    .upload-btn {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      border: 6px solid rgba(60,60,60,0.95);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .consent-bar {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 248px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(0,0,0,0.45);
+      border-radius: 14px;
+      padding: 12px 14px;
+      backdrop-filter: blur(6px);
+    }
+
+    .consent-bar input[type="checkbox"] {
       appearance: none;
       -webkit-appearance: none;
       width: 24px;
       height: 24px;
       min-width: 24px;
-      border: 2px solid rgba(255,255,255,0.85);
+      border: 2px solid rgba(255,255,255,0.8);
       border-radius: 6px;
-      background: rgba(0,0,0,0.2);
-      margin-top: 2px;
+      background: rgba(0,0,0,0.25);
       position: relative;
-      cursor: pointer;
+      margin-top: 2px;
     }
 
-    .consent-wrap input[type="checkbox"]:checked::after {
+    .consent-bar input[type="checkbox"]:checked::after {
       content: "✓";
       position: absolute;
       inset: 0;
@@ -157,100 +259,26 @@
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .zoom {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 22px;
-      margin-top: 14px;
-      color: rgba(255,255,255,0.9);
-      font-size: 16px;
-    }
-
-    .zoom .active {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.25);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-    }
-
-    .camera-controls {
-      width: 100%;
-      max-width: 320px;
-      margin: 18px auto 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .side-btn {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(0,0,0,0.35);
-      color: white;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      backdrop-filter: blur(6px);
-    }
-
-    .shutter {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      border: 4px solid rgba(255,255,255,0.8);
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      cursor: pointer;
-    }
-
-    .shutter:disabled,
-    .side-btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
-    .shutter-inner {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.7);
-      border: none;
-    }
-
-    .hint {
-      margin-top: 12px;
-      text-align: center;
       font-size: 15px;
-      letter-spacing: 1px;
-      color: rgba(255,255,255,0.82);
-      text-transform: uppercase;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      font-weight: 700;
+    }
+
+    .consent-bar label {
+      font-size: 14px;
+      line-height: 1.4;
+      color: rgba(255,255,255,0.95);
+      text-align: left;
     }
 
     .status {
-      margin-top: 10px;
-      min-height: 20px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.95);
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 210px;
       text-align: center;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      font-size: 14px;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.55);
     }
 
     .fallback {
@@ -259,20 +287,25 @@
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 28px;
       text-align: center;
       background: #000;
-      z-index: 5;
+      z-index: 10;
+      color: #fff;
     }
 
-    @media (max-width: 380px) {
+    @media (max-width: 390px) {
       .subtitle {
-        letter-spacing: 4px;
+        letter-spacing: 5px;
         font-size: 12px;
       }
 
-      .consent-wrap {
-        font-size: 13px;
+      .brand {
+        font-size: 28px;
+      }
+
+      .consent-bar {
+        bottom: 235px;
       }
     }
   </style>
@@ -285,51 +318,51 @@
     <div class="fallback" id="fallback">
       <div>
         <p>Kamera konnte nicht geöffnet werden.</p>
-        <p>Bitte erlaube den Kamerazugriff und lade die Seite neu.</p>
+        <p>Bitte erlaube Kamerazugriff und lade die Seite neu.</p>
       </div>
     </div>
 
     <div class="overlay">
-      <div style="display:flex; flex-direction:column; align-items:center;">
-        <div class="top-light"></div>
-        <div class="countdown" id="countdown">00:00:14</div>
+      <div class="top-bar">
+        <div class="record-dot"></div>
+        <div class="timer" id="timer">00:00:00</div>
       </div>
 
       <div class="hero">
         <div class="date">MARCH 13TH</div>
         <h1 class="title">CAM ON</h1>
         <div class="subtitle">INTERNATIONAL MUSIC VIBES</div>
+        <div class="brand">APARTMENT</div>
+      </div>
 
-        <div class="consent-wrap">
-          <input type="checkbox" id="consent" />
-          <label for="consent">
-            Ich stimme zu, dass mein Foto auf Instagram und anderen Social-Media-Plattformen genutzt werden darf.
-          </label>
-        </div>
-
-        <div class="zoom">
-          <span>0.5</span>
-          <span class="active">1×</span>
+      <div class="bottom-ui">
+        <div class="zoom-row">
+          <span>0,5</span>
+          <span class="zoom-active">1×</span>
           <span>2</span>
           <span>3</span>
         </div>
 
-        <div class="camera-controls">
-          <button class="side-btn" id="switchBtn" type="button">↺</button>
+        <div class="controls">
+          <button class="side-btn" id="pauseBtn" type="button">❚❚</button>
 
-          <button class="shutter" id="captureBtn" type="button" disabled>
-            <span class="shutter-inner"></span>
+          <button class="capture-btn" id="captureBtn" type="button">
+            <span class="capture-inner"></span>
           </button>
 
-          <button class="side-btn" id="uploadBtn" type="button" disabled>↑</button>
+          <button class="upload-btn" id="uploadBtn" type="button" title="Hochladen"></button>
         </div>
-
-        <div class="hint" id="hint">BITTE ZUERST ZUSTIMMEN</div>
-        <div class="status" id="status"></div>
       </div>
-
-      <div></div>
     </div>
+
+    <div class="consent-bar">
+      <input type="checkbox" id="consent" />
+      <label for="consent">
+        Ich stimme zu, dass mein Foto auf Instagram und anderen Social-Media-Plattformen genutzt werden darf.
+      </label>
+    </div>
+
+    <div class="status" id="status"></div>
   </div>
 
   <script>
@@ -341,15 +374,35 @@
     const consent = document.getElementById("consent");
     const captureBtn = document.getElementById("captureBtn");
     const uploadBtn = document.getElementById("uploadBtn");
-    const switchBtn = document.getElementById("switchBtn");
-    const hint = document.getElementById("hint");
+    const pauseBtn = document.getElementById("pauseBtn");
     const statusText = document.getElementById("status");
     const fallback = document.getElementById("fallback");
-    const countdown = document.getElementById("countdown");
+    const timer = document.getElementById("timer");
 
     let stream = null;
-    let currentFacingMode = "environment";
     let capturedBlob = null;
+    let facingMode = "environment";
+    let timerSeconds = 0;
+    let timerInterval = null;
+    let paused = false;
+
+    function formatTime(totalSeconds) {
+      const hh = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+      const mm = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+      const ss = String(totalSeconds % 60).padStart(2, "0");
+      return `${hh}:${mm}:${ss}`;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timer.textContent = formatTime(0);
+      timerInterval = setInterval(() => {
+        if (!paused) {
+          timerSeconds++;
+          timer.textContent = formatTime(timerSeconds);
+        }
+      }, 1000);
+    }
 
     async function startCamera() {
       try {
@@ -358,31 +411,22 @@
         }
 
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: currentFacingMode },
+          video: {
+            facingMode: facingMode
+          },
           audio: false
         });
 
         video.srcObject = stream;
         fallback.style.display = "none";
         statusText.textContent = "";
-      } catch (err) {
+      } catch (error) {
         fallback.style.display = "flex";
         statusText.textContent = "Kamera konnte nicht gestartet werden.";
       }
     }
 
-    function updateButtons() {
-      const allowed = consent.checked;
-      captureBtn.disabled = !allowed;
-      uploadBtn.disabled = !allowed || !capturedBlob;
-      hint.textContent = allowed ? "JETZT FOTO MACHEN" : "BITTE ZUERST ZUSTIMMEN";
-    }
-
-    consent.addEventListener("change", updateButtons);
-
     captureBtn.addEventListener("click", () => {
-      if (!consent.checked) return;
-
       const width = video.videoWidth;
       const height = video.videoHeight;
 
@@ -399,13 +443,20 @@
 
       canvas.toBlob((blob) => {
         capturedBlob = blob;
-        uploadBtn.disabled = false;
-        statusText.textContent = "Foto aufgenommen. Jetzt hochladen.";
+        statusText.textContent = "Foto aufgenommen.";
       }, "image/jpeg", 0.92);
     });
 
     uploadBtn.addEventListener("click", async () => {
-      if (!capturedBlob || !consent.checked) return;
+      if (!capturedBlob) {
+        statusText.textContent = "Bitte erst ein Foto machen.";
+        return;
+      }
+
+      if (!consent.checked) {
+        statusText.textContent = "Bitte erst zustimmen.";
+        return;
+      }
 
       statusText.textContent = "Foto wird hochgeladen...";
 
@@ -420,31 +471,31 @@
           body: formData
         });
 
-        if (!response.ok) throw new Error("Upload failed");
+        if (!response.ok) {
+          throw new Error("Upload fehlgeschlagen");
+        }
 
-        statusText.textContent = "Foto erfolgreich hochgeladen.";
         capturedBlob = null;
-        uploadBtn.disabled = true;
-      } catch (err) {
+        statusText.textContent = "Foto erfolgreich hochgeladen.";
+      } catch (error) {
         statusText.textContent = "Upload fehlgeschlagen.";
       }
     });
 
-    switchBtn.addEventListener("click", async () => {
-      currentFacingMode = currentFacingMode === "environment" ? "user" : "environment";
+    pauseBtn.addEventListener("click", () => {
+      paused = !paused;
+      pauseBtn.textContent = paused ? "▶" : "❚❚";
+      statusText.textContent = paused ? "Timer pausiert." : "";
+    });
+
+    video.addEventListener("click", async () => {
+      facingMode = facingMode === "environment" ? "user" : "environment";
       await startCamera();
     });
 
-    let seconds = 14;
-    setInterval(() => {
-      if (seconds > 0) seconds--;
-      const ss = String(seconds).padStart(2, "0");
-      countdown.textContent = `00:00:${ss}`;
-    }, 1000);
-
-    updateButtons();
+    timer.textContent = formatTime(0);
+    startTimer();
     startCamera();
   </script>
 </body>
 </html>
-    
